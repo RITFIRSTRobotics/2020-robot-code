@@ -1,0 +1,14 @@
+# GCC outputs
+*.o
+*.so
+
+# object directory and scratch directory
+bin/
+obj/
+tmp/
+
+# JetBrains IDE junk
+.idea
+
+# Valgrind outputs
+massif.out.*
