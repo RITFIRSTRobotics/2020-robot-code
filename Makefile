@@ -1,6 +1,6 @@
 # 2020-robot-code Makefile
 CC=gcc
-CFLAGS=-Wall -Wextra -std=c11 -pthread -lm
+CFLAGS=-Wall -Wextra -std=c11 -iquote. -pthread -lm
 
 all: bin/robot
 
