@@ -118,6 +118,61 @@ int pz_setMotor(PiconZero pz, int motor, int8_t value)
 	return pz_sendByte(pz, (uint8_t)motor, value);
 }
 
+int pz_readInput(PiconZero pz, int channel, i2cWord_t* buf)
+{
+	if(channel < 0 || channel > PZ_MAX_INPUT_CHANNEL)
+	{
+		return PZ_INVALID_RANGE;
+	}
+	errno = 0;
+	int tmpBuf = pz_getWord(pz, channel + 1);
+	if(errno != 0)
+	{
+		//TODO error handling.
+		return errno;
+	}
+	*buf = tmpBuf;
+	return PZ_EXIT_SUCCESS;
+}
+
+int pz_setOutputConfig(PiconZero pz, int channel, int8_t configValue)
+{
+	if(channel < 0 || channel > PZ_MAX_OUTPUT_CHANNEL)
+	{
+		return PZ_INVALID_RANGE;
+	}
+	if(configValue < 0 || configValue > PZ_MAX_OUTPUT_CONFIG)
+	{
+		return PZ_INVALID_RANGE;
+	}
+	errno = 0;
+	pz_sendByte(pz, PZCMD_OUTCFG0 + channel, configValue)
+	return errno;
+}
+
+int pz_setInputConfig(PiconZero pz, int channel, int configValue, int pullup)
+{
+	if(channel < 0 || channel > PZ_MAX_INPUT_CHANNEL)
+	{
+		return PZ_INVALID_RANGE;
+	}
+	if(configValue < 0 || configValue > PZ_MAX_INPUT_CONFIG)
+	{
+		return PZ_INVALID_RANGE;
+	}
+	if((pz->revision & 0xF0) >> 8 <= 6 )
+	{
+		return PZ_UNSUPPORTED;
+	}
+	if(configValue == 0 && pullup)
+	{
+		configValue = 128;
+	}
+	errno = 0;
+	pz_sendByte(pz, PZCMD_INCFG0 + channel, configValue);
+	return errno;
+}
+
 int pz_cleanup(PiconZero pz)
 {
 	pz->initialized = 0;
