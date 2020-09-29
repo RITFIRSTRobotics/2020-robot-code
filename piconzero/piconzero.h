@@ -50,16 +50,63 @@ typedef struct PiconZero_S
     uint16_t revision;
 }PiconZero;
 
-
+/**
+ *
+ * @return
+ */
 PiconZero* pz_create();
+/**
+ *
+ * @param pz
+ * @return
+ */
 int pz_init(PiconZero* pz);
 
+/**
+ *
+ * @param pz
+ * @param motor
+ * @param value
+ * @return
+ */
 int pz_setMotor(PiconZero* pz, int motor, int8_t value);
+/**
+ *
+ * @param pz
+ * @param channel
+ * @param buf
+ * @return
+ */
 int pz_readInput(PiconZero* pz, int channel, i2cWord_t* buf);
+/**
+ *
+ * @param pz
+ * @param channel
+ * @param configValue
+ * @return
+ */
 int pz_setOutputConfig(PiconZero* pz, int channel, int8_t configValue);
+/**
+ *
+ * @param pz
+ * @param channel
+ * @param configValue
+ * @param pullup
+ * @return
+ */
 int pz_setInputConfig(PiconZero* pz, int channel, int configValue, int pullup);
 
+/**
+ *
+ * @param pz
+ * @return
+ */
 int pz_cleanup(PiconZero* pz);
+/**
+ *
+ * @param pz
+ * @return
+ */
 int pz_destroy(PiconZero* pz);
 
 #endif
