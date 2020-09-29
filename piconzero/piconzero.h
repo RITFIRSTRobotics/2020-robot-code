@@ -48,14 +48,18 @@ typedef struct PiconZero_S
      * First byte is the firmware revision, second is the board type.
      */
     uint16_t revision;
-}* PiconZero;
+}PiconZero;
 
 
-PiconZero pz_create();
-int pz_init(PiconZero pz);
+PiconZero* pz_create();
+int pz_init(PiconZero* pz);
 
-int pz_setMotor(PiconZero pz, int motor, int8_t value);
-int pz_cleanup(PiconZero pz);
-int pz_destroy(PiconZero pz);
+int pz_setMotor(PiconZero* pz, int motor, int8_t value);
+int pz_readInput(PiconZero* pz, int channel, i2cWord_t* buf);
+int pz_setOutputConfig(PiconZero* pz, int channel, int8_t configValue);
+int pz_setInputConfig(PiconZero* pz, int channel, int configValue, int pullup);
+
+int pz_cleanup(PiconZero* pz);
+int pz_destroy(PiconZero* pz);
 
 #endif
