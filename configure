@@ -1,0 +1,115 @@
+#!/bin/bash
+# 2020-robot-code configuration file
+#
+# This file will automatically generates a makefile that runs all the sub-makefiles
+#
+# @author Connor Henley, @thatging3rkid 
+
+# run an apt-get update if this is automated
+if test -e "config.onpush" || test -e "config.full"; then
+    sudo apt-get update -qq
+fi
+
+# install valgrind
+if ! [ -x "$(command -v valgrind)" ]; then
+    sudo apt-get install -y valgrind
+fi
+
+# install i2c development headers
+sudo apt-get install -y libi2c-dev
+
+# Start the makefile, put the header down
+printf "" >Makefile
+printf '# %s makefile\n' "${PWD##*/}" >>Makefile
+
+# Print the configuration file status
+if test -e "config.onpush"; then
+    printf '# configuration: on-push\n' >>Makefile
+elif test -e "config.full"; then
+    printf '# configuration: full\n' >>Makefile
+else
+    printf '# configuration: dev\n' >>Makefile
+fi
+
+# finish debugging info
+printf '# Generated on: %s at %s\n' "$HOSTNAME" "`date`" >>Makefile
+
+# Mark directories to ignore
+skips=("./.git/" "./.github/" "./obj/" "./tmp/")
+if ! test -e "config.full"; then
+    skips+=("./doc/")
+fi
+
+# Searh for Makefiles
+dirs=("./robot.mk")
+for dir in ./*/
+do
+    # check if this should be skipped
+    if [[ " ${skips[@]} " =~ " ${dir} " ]]; then
+        continue
+    fi
+
+    # if there's a makefile, save it
+    if test -f "${dir}/Makefile"; then
+		dirs+=(${dir})
+    fi
+done
+
+# Define the make mode
+if test -e "config.onpush"; then
+    make_mode="MAKE_CONFIG=ONPUSH"
+elif test -e "config.full"; then
+    make_mode="MAKE_CONFIG=FULL"
+else
+    make_mode="MAKE_CONFIG=DEV"
+fi
+
+# Define the git hash
+git_hash=`git describe --always`
+if ! [[ $git_hash =~ [0-9a-f]{7} ]]; then
+    git_hash="fffffff"
+fi
+git_hash="GIT_HASH="${git_hash}
+
+# define a function to generate each line of the makefile
+#
+# @param $1 the make command to run
+# @param $2 the file/directory to generate a make entry for
+gen_makefile_line(){
+    if test -f ${1}; then
+        printf '\t-make %s %s -f %s %s\n' ${make_mode} ${git_hash} ${1} ${2} >>Makefile
+    else
+        printf '\t-make %s %s -C %s %s\n' ${make_mode} ${git_hash} ${1} ${2} >>Makefile
+    fi
+}
+
+# Add the build-all instruction, ensuring that we clean before a build as cleaning will remove the obj dir
+printf '\nall:\n' >>Makefile
+for s in "${dirs[@]}"
+do
+    gen_makefile_line ${s} "clean";
+done
+for s in "${dirs[@]}"
+do
+    gen_makefile_line ${s} "ci-build";
+done
+printf '\t@echo "Finished running ci-build for all"\n' >>Makefile
+
+# Add the test instruction
+printf '\ncheck:\n' >>Makefile
+for s in "${dirs[@]}"
+do
+    gen_makefile_line ${s} "ci-test"
+done
+printf '\t@echo "Finished running ci-test for all"\n' >>Makefile
+
+# Add the clean instruction
+printf '\nclean:\n' >>Makefile
+# We need to clean everything before we make anything, or the clean instructions will wipe all the previous obj files
+for s in "${dirs[@]}"
+do
+    gen_makefile_line ${s} "clean";
+done
+printf '\t@echo "Finished running clean for all"\n' >>Makefile
+
+echo "Complete!"
