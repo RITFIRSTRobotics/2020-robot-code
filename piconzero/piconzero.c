@@ -179,7 +179,7 @@ int pz_readInput(PiconZero* pz, int channel, i2cWord_t* buf)
 /**
  * @inherit
  */
-int pz_setOutputConfig(PiconZero* pz, int channel, int8_t configValue)
+int pz_setOutputConfig(PiconZero* pz, int channel, PZ_OutputConfig_t configValue)
 {
 	if(channel < 0 || channel > PZ_MAX_OUTPUT_CHANNEL)
 	{
@@ -197,7 +197,7 @@ int pz_setOutputConfig(PiconZero* pz, int channel, int8_t configValue)
 /**
  * @inherit
  */
-int pz_setInputConfig(PiconZero* pz, int channel, int configValue, int pullup)
+int pz_setInputConfig(PiconZero* pz, int channel, PZ_InputConfig_t configValue, int pullup)
 {
 	if(channel < 0 || channel > PZ_MAX_INPUT_CHANNEL)
 	{

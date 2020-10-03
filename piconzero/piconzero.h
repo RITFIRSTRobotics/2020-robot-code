@@ -42,6 +42,21 @@ typedef enum {
     PZ_UNINITIALIZED = -5
 } PiconZeroState_t;
 
+typedef enum {
+    DIGITAL = 0,
+    ANALOG = 1,
+    DS18B20 = 2,
+    DUTY_CYCLE=4,
+    PULSE_WIDTH=5
+}PZ_InputConfig_t;
+
+typedef enum {
+    DIGITAL = 0,
+    PWM = 1,
+    SERVO = 2,
+    WS2812B = 3
+}PZ_OutputConfig_t;
+
 typedef struct PiconZero_S
 {
     /**
@@ -93,7 +108,7 @@ int pz_readInput(PiconZero* pz, int channel, i2cWord_t* buf);
  * @param configValue
  * @return
  */
-int pz_setOutputConfig(PiconZero* pz, int channel, int8_t configValue);
+int pz_setOutputConfig(PiconZero* pz, int channel, PZ_OutputConfig_t configValue);
 /**
  *
  * @param pz
@@ -102,7 +117,7 @@ int pz_setOutputConfig(PiconZero* pz, int channel, int8_t configValue);
  * @param pullup
  * @return
  */
-int pz_setInputConfig(PiconZero* pz, int channel, int configValue, int pullup);
+int pz_setInputConfig(PiconZero* pz, int channel, PZ_InputConfig_t configValue, int pullup);
 
 /**
  *
