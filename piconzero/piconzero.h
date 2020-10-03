@@ -15,6 +15,7 @@
 
 // local i2c utilities
 #include "core/i2c/i2cUtils.h"
+#include "../../../../../../../usr/include/bits/stdint-intn.h"
 
 #define PZ_I2CADDR 0x22
 #define PZCMD_MOTORA 0
@@ -93,7 +94,7 @@ int pz_setMotor(PiconZero_t* pz, int motor, int8_t value);
  * @param buf
  * @return
  */
-int pz_readInput(PiconZero_t* pz, int channel, i2cWord_t* buf);
+int pz_readInput(PiconZero_t* pz, int channel, int16_t *buf);
 /**
  *
  * @param pz

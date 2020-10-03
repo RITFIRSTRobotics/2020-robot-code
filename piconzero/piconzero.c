@@ -159,7 +159,7 @@ int pz_setMotor(PiconZero_t* pz, int motor, int8_t value)
 /**
  * @inherit
  */
-int pz_readInput(PiconZero_t* pz, int channel, i2cWord_t* buf)
+int pz_readInput(PiconZero_t* pz, int channel, int16_t *buf)
 {
 	if(channel < 0 || channel > PZ_MAX_INPUT_CHANNEL)
 	{
