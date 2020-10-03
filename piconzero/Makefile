@@ -19,6 +19,10 @@ $(OBJ_DIR)/piconzero.o: piconzero.c piconzero.h
 	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
+$(OBJ_DIR)/PiconZero.o: $(OBJ_DIR)/piconzero.o PiconZero.cpp PiconZero.hpp
+	@mkdir -p $(OBJ_DIR)
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
 ### Required recipes
 
 ci-build: all
