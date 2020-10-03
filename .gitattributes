@@ -1,0 +1,7 @@
+# 2020-robot-code git attributes
+
+# always pull ./configure with lf endings, since bash doesn't like crlf
+/configure eol=lf
+
+# classify h files as C++ files
+*.h linguist-language=C++
