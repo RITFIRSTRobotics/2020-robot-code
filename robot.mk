@@ -3,7 +3,7 @@
 # @author Connor Henley, @thatging3rkid
 
 # include defaults from core
-include core/defaults.mk
+include ./core/defaults.mk
 
 # setup directories
 OBJ_DIR=./obj
@@ -17,7 +17,7 @@ all: $(OBJ_DIR)/robot
 
 $(OBJ_DIR)/robot.o: robot.cpp
 	@mkdir -p $(OBJ_DIR)
-	$(CXX) $(CPPFLAGS) -c -o $@ $<
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 $(OBJ_DIR)/robot: $(OBJ_DIR)/robot.o
 	@mkdir -p $(OBJ_DIR)
