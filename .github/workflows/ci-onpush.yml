@@ -1,0 +1,41 @@
+# 2020-core-code GitHub Action config
+#
+# Action that runs on every push, which should
+#     - compile all C code
+#     - run all test cases
+# Notably, documentation does not get built.
+#
+# @version v1.0.1
+# @author Connor Henley, @thatging3rkid
+name: On-Push Integration Testing
+
+on:
+    # Run on every push, except ones to master
+    push:
+        branches-ignore:
+            - 'master'
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    
+    steps:
+    - uses: actions/checkout@v2 # checkout the repository
+      with:
+        submodules: 'true'
+
+    # mark that we're running an on-push build
+    - name: Setup
+      run: touch config.onpush && touch core/config.onpush
+
+    # run ./configure
+    - name: Configure
+      run: ./configure && ./core/configure
+
+    # build all the code
+    - name: Build
+      run: make
+
+    # run tests
+    - name: Test
+      run: make check

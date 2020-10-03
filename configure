@@ -7,16 +7,28 @@
 
 # run an apt-get update if this is automated
 if test -e "config.onpush" || test -e "config.full"; then
-    sudo apt-get update -qq
+    if ! [[ -z "$CI" ]]; then
+        sudo apt-get update -qq
+    fi
 fi
 
 # install valgrind
 if ! [ -x "$(command -v valgrind)" ]; then
-    sudo apt-get install -y valgrind
+    if ! [[ -z "$CI" ]]; then
+        sudo apt-get install -y valgrind
+    else
+        printf "[*err] valgrind not installed\n"
+    fi
 fi
 
 # install i2c development headers
-sudo apt-get install -y libi2c-dev
+if ! test -f "/usr/include/linux/i2c-dev.h"; then
+    if ! [[ -z "${CI}" ]]; then
+        sudo apt-get install -y libi2c-dev
+    else
+        printf "[warn] i2c headers not found\n"
+    fi
+fi
 
 # Start the makefile, put the header down
 printf "" >Makefile
@@ -41,7 +53,7 @@ if ! test -e "config.full"; then
 fi
 
 # Searh for Makefiles
-dirs=("./robot.mk")
+dirs=()
 for dir in ./*/
 do
     # check if this should be skipped
@@ -54,6 +66,8 @@ do
 		dirs+=(${dir})
     fi
 done
+# add the robot makefile at the end
+dirs+=("./robot.mk")
 
 # Define the make mode
 if test -e "config.onpush"; then
@@ -87,6 +101,9 @@ gen_makefile_line(){
 printf '\nall:\n' >>Makefile
 for s in "${dirs[@]}"
 do
+    if [[ "${s}" == "./core/" ]]; then
+        printf '\tcd %s; ./configure\n' ${s} >>Makefile
+    fi
     gen_makefile_line ${s} "clean";
 done
 for s in "${dirs[@]}"

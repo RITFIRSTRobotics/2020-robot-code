@@ -7,13 +7,10 @@
 
 PiconZero* PiconZero::instance = nullptr;
 
-PiconZero* PiconZero::getInstance() {
-    //The singleton has not yet been created
-    if (this->instance == nullptr) {
-        this->instance = new PiconZero();
-    }
-    return this->instance;
-}
+/*
+static PiconZero* PiconZero::getInstance() {
+    
+}*/
 
 void PiconZero::setPortConfig(uint8_t port, PortDirection dir, PortConfig cfg) {
     if (dir == INPUT) {

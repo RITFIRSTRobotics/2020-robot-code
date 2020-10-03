@@ -8,7 +8,7 @@
 #include "piconzero.h"
 #include <memory>
 
-class PiconZero{
+class PiconZero {
 public:
     /**
      * Possible directions for data on a piconzero port to travel.
@@ -39,7 +39,13 @@ public:
      * @return
      *  A singleton instance of a PiconZero object
      */
-    PiconZero* getInstance();
+    static PiconZero* getInstance() {
+        // The singleton has not yet been created
+        if (PiconZero::instance == nullptr) {
+            PiconZero::instance = new PiconZero();
+        }
+        return PiconZero::instance;
+    }
 
     /**
      *
