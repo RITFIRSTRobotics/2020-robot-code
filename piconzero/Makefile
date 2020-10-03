@@ -12,14 +12,15 @@ TEST_OBJ_DIR=$(TEST_DIR)/obj
 
 # allow GCC to find local includes
 CFLAGS += -iquote..
+CXXFLAGS += -iquote..
 
-all: $(OBJ_DIR)/piconzero.o
+all: $(OBJ_DIR)/piconzero.o $(OBJ_DIR)/PiconZero_cpp.o
 
 $(OBJ_DIR)/piconzero.o: piconzero.c piconzero.h
 	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-$(OBJ_DIR)/PiconZero.o: $(OBJ_DIR)/piconzero.o PiconZero.cpp PiconZero.hpp
+$(OBJ_DIR)/PiconZero_cpp.o: PiconZero.cpp PiconZero.hpp
 	@mkdir -p $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 

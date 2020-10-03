@@ -6,6 +6,7 @@
 #define INC_2020_ROBOT_CODE_PICONZERO_HPP
 
 #include "piconzero.h"
+#include <memory>
 
 class PiconZero{
 public:
@@ -31,6 +32,7 @@ public:
         SERVO = 12,
         WS2812B = 13
     };
+
 
     /**
      * Get the singleton instance of the PiconZero, or create a new one and return it.
@@ -60,7 +62,7 @@ public:
      * @param port_num
      * @return
      */
-    int8_t getInput(uint8_t port_num);
+    int16_t readInput(uint8_t port_num);
 
     /**
      *
@@ -81,9 +83,13 @@ private:
     /**
      * Construct a singleton PiconZero object
      */
-    PiconZero();
-    std::unique_ptr<PiconZero_t, pz_destroy> pz;
-    static PiconZero* instance = nullptr;
+    PiconZero()
+    {
+        this->pz.reset(pz_create());
+        pz_init(this->pz.get());
+    }
+    std::unique_ptr<PiconZero_t> pz;
+    static PiconZero* instance;
 };
 
 #endif //INC_2020_ROBOT_CODE_PICONZERO_HPP
