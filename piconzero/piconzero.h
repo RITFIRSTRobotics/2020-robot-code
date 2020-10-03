@@ -42,35 +42,28 @@ typedef enum {
     PZ_UNINITIALIZED = -5
 } PiconZeroState_t;
 
+// Define an enum for the input configurations
 typedef enum {
-    DIGITAL = 0,
-    ANALOG = 1,
-    DS18B20 = 2,
-    DUTY_CYCLE=4,
-    PULSE_WIDTH=5
-}PZ_InputConfig_t;
+    PZ_IC_DIGITAL = 0,
+    PZ_IC_ANALOG = 1,
+    PZ_IC_DS18B20 = 2,
+    PZ_IC_DUTY_CYCLE=4,
+    PZ_IC_PULSE_WIDTH=5
+} PZ_InputConfig_t;
 
+// Define an enum for the output configurations
 typedef enum {
-    DIGITAL = 0,
-    PWM = 1,
-    SERVO = 2,
-    WS2812B = 3
-}PZ_OutputConfig_t;
+    PZ_OC_DIGITAL = 0,
+    PZ_OC_PWM = 1,
+    PZ_OC_SERVO = 2,
+    PZ_OC_WS2812B = 3
+} PZ_OutputConfig_t;
 
-typedef struct PiconZero_S
-{
-    /**
-     * The i2cBus struct representing the bus the piconzero is on
-     */
-    i2cBus bus;
-    /**
-     * 1 if the piconzero has been intialized, 0 otherwise.
-     */
-    uint16_t initialized;
-    /**
-     * First byte is the firmware revision, second is the board type.
-     */
-    uint16_t revision;
+// Define a structure to save data about the Picon Zero
+typedef struct {
+    i2cBus bus; // the i2c bus struct representing the bust the Picon Zero is on
+    uint16_t initialized; // 1 if the board has been initialized, else 0
+    uint16_t revision; // board info, first byte is firmware revision, second is board type
 } PiconZero;
 
 /**
@@ -100,7 +93,7 @@ int pz_setMotor(PiconZero* pz, int motor, int8_t value);
  * @param buf
  * @return
  */
-int pz_readInput(PiconZero* pz, int channel, i2cWord_t* buf);
+int pz_readInput(PiconZero* pz, int channel, int16_t* buf);
 /**
  *
  * @param pz

@@ -113,7 +113,7 @@ static int16_t pz_getWord(PiconZero* pz, int16_t reg)
  */
 PiconZero* pz_create()
 {
-	PiconZero* rval = malloc(sizeof(struct PiconZero));
+	PiconZero* rval = malloc(sizeof(PiconZero));
 	char* filename="/dev/i2c-1";
 	if( (rval->bus = i2cBus_create(filename)) == NULL )
 	{
@@ -159,7 +159,7 @@ int pz_setMotor(PiconZero* pz, int motor, int8_t value)
 /**
  * @inherit
  */
-int pz_readInput(PiconZero* pz, int channel, i2cWord_t* buf)
+int pz_readInput(PiconZero* pz, int channel, int16_t* buf)
 {
 	if(channel < 0 || channel > PZ_MAX_INPUT_CHANNEL)
 	{
@@ -190,7 +190,7 @@ int pz_setOutputConfig(PiconZero* pz, int channel, PZ_OutputConfig_t configValue
 		return PZ_INVALID_RANGE;
 	}
 	errno = 0;
-	pz_sendByte(pz, PZCMD_OUTCFG0 + channel, configValue)
+	pz_sendByte(pz, PZCMD_OUTCFG0 + channel, configValue);
 	return errno;
 }
 
