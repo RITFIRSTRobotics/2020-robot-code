@@ -1,7 +1,7 @@
-//
-// Created by alex on 10/2/20.
-//
-
+/**
+ * @file Class Declaration of the PiconZero Class.
+ * @author Alex Kneipp
+ */
 #ifndef INC_2020_ROBOT_CODE_PICONZERO_HPP
 #define INC_2020_ROBOT_CODE_PICONZERO_HPP
 
@@ -9,22 +9,81 @@
 
 class PiconZero{
 public:
+    /**
+     * Possible directions for data on a piconzero port to travel.
+     */
     enum PortDirection
     {
         INPUT,
         OUTPUT
     };
-    PiconZero();
+    /**
+     * All possible port configurations for the piconzero (Some are unsupported).
+     */
+    enum PortConfig
+    {
+        DIGITAL = 0,
+        ANALOG = 1,
+        DS18B20 = 2,
+        DUTY_CYCLE = 4,
+        PULSE_WIDTH = 5,
+        PWM = 11,
+        SERVO = 12,
+        WS2812B = 13
+    };
 
-    void setPortDirection(uint8_t port, PortDirection dir);
-    void setMotor(uint8_t motor_num, int8_t value);
+    /**
+     * Get the singleton instance of the PiconZero, or create a new one and return it.
+     * @return
+     *  A singleton instance of a PiconZero object
+     */
+    PiconZero* getInstance();
+
+    /**
+     *
+     * @param port
+     * @param dir
+     * @param cfg
+     */
+    void setPortConfig(uint8_t port, PortDirection dir, PortConfig cfg);
+
+    /**
+     *
+     * @param motor_num
+     * @param value
+     * @return
+     */
+    int setMotor(uint8_t motor_num, int8_t value);
+
+    /**
+     *
+     * @param port_num
+     * @return
+     */
     int8_t getInput(uint8_t port_num);
+
+    /**
+     *
+     * @param port_num
+     * @param value
+     */
     void setServo(uint8_t port_num, int8_t value);
+
+    /**
+     *
+     * @param port_num
+     * @param value
+     */
     void setPWM(uint8_t port_num, int8_t value);
 
     ~PiconZero();
 private:
+    /**
+     * Construct a singleton PiconZero object
+     */
+    PiconZero();
     std::unique_ptr<PiconZero_t, pz_destroy> pz;
+    static PiconZero* instance = nullptr;
 };
 
 #endif //INC_2020_ROBOT_CODE_PICONZERO_HPP
