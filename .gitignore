@@ -12,3 +12,8 @@ tmp/
 
 # Valgrind outputs
 massif.out.*
+
+# ./configure output
+/config.onpush
+/config.full
+/Makefile
