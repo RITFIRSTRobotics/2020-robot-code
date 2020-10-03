@@ -12,6 +12,7 @@ TEST_OBJ_DIR=$(TEST_DIR)/obj
 
 # allow GCC to find local includes
 CFLAGS += -iquote.
+CXXFLAGS += -iquote.
 
 all: $(OBJ_DIR)/robot
 
