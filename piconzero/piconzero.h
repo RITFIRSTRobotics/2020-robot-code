@@ -15,7 +15,6 @@
 
 // local i2c utilities
 #include "core/i2c/i2cUtils.h"
-#include "../../../../../../../usr/include/bits/stdint-intn.h"
 
 #define PZ_I2CADDR 0x22
 #define PZCMD_MOTORA 0
