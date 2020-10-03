@@ -1,14 +1,19 @@
 #ifndef _PICONZERO_H
 #define _PICONZERO_H
 
-#include <errno.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <stdio.h>
+// standard includes
 #include <time.h>
+#include <errno.h>
+#include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
+
+// i2c utilities
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <linux/i2c-dev.h>
+
+// local i2c utilities
 #include "core/i2c/i2cUtils.h"
 
 #define PZ_I2CADDR 0x22
@@ -27,12 +32,15 @@
 #define PZ_MAX_OUTPUT_CONFIG 3
 #define PZ_MAX_INPUT_CONFIG 2
 
-#define PZ_EXIT_SUCCESS 0
-#define PZ_EXCEEDED_RETRIES -1
-#define PZ_INVALID_RANGE -2
-#define PZ_UNSUPPORTED -3
-#define PZ_COULD_NOT_CONNECT -4
-#define PZ_UNINITIALIZED -5
+// Define an enum for the various return codes of the Picon Zero
+typedef enum {
+    PZ_EXIT_SUCCESS = 0,
+    PZ_EXCEEDED_RETRIES = -1,
+    PZ_INVALID_RANGE = -2,
+    PZ_UNSUPPORTED = -3,
+    PZ_COULD_NOT_CONNECT = -4,
+    PZ_UNINITIALIZED = -5
+} PiconZeroState_t;
 
 typedef struct PiconZero_S
 {
@@ -48,7 +56,7 @@ typedef struct PiconZero_S
      * First byte is the firmware revision, second is the board type.
      */
     uint16_t revision;
-}PiconZero;
+} PiconZero;
 
 /**
  *
