@@ -1,5 +1,18 @@
+/**
+ * piconzero.h
+ *
+ * Driver for the 4tronix Picon Zero written in C
+ *
+ * @author Alex Kneipp, @ahkneipp
+ * @author Connor Henley, @thatging3rkid
+ */
 #ifndef _PICONZERO_H
 #define _PICONZERO_H
+
+// allow C++ to parse this
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 // standard includes
 #include <time.h>
@@ -124,5 +137,10 @@ int pz_cleanup(PiconZero_t* pz);
  * @return
  */
 int pz_destroy(PiconZero_t* pz);
+
+// allow C++ to parse this
+#ifdef __cplusplus
+}
+#endif
 
 #endif

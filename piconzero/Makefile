@@ -14,13 +14,13 @@ TEST_OBJ_DIR=$(TEST_DIR)/obj
 CFLAGS += -iquote..
 CXXFLAGS += -iquote..
 
-all: $(OBJ_DIR)/piconzero.o $(OBJ_DIR)/PiconZero_cpp.o
+all: $(OBJ_DIR)/llpiconzero.o $(OBJ_DIR)/piconzero.o
 
-$(OBJ_DIR)/piconzero.o: piconzero.c piconzero.h
+$(OBJ_DIR)/llpiconzero.o: piconzero.c piconzero.h
 	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-$(OBJ_DIR)/PiconZero_cpp.o: PiconZero.cpp PiconZero.hpp
+$(OBJ_DIR)/piconzero.o: PiconZero.cpp PiconZero.hpp
 	@mkdir -p $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
