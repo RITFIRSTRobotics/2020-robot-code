@@ -22,7 +22,7 @@ $(OBJ_DIR)/robot.o: robot.cpp
 
 $(OBJ_DIR)/robot: $(OBJ_DIR)/robot.o
 	@mkdir -p $(OBJ_DIR)
-	$(CXX) -o $@ $^ $(LD_FLAGS)
+	$(CXX) -o $@ $^ $(LD_FLAGS) -lncurses
 
 .PHONY: run
 run: $(OBJ_DIR)/robot
