@@ -7,6 +7,7 @@ include ./core/defaults.mk
 
 # setup directories
 OBJ_DIR=./obj
+CORE_OBJ_DIR=./core/obj
 TEST_DIR=./test
 TEST_OBJ_DIR=$(TEST_DIR)/obj
 
@@ -20,13 +21,18 @@ $(OBJ_DIR)/robot.o: robot.cpp
 	@mkdir -p $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-$(OBJ_DIR)/robot: $(OBJ_DIR)/robot.o
+$(OBJ_DIR)/robot: $(OBJ_DIR)/robot.o $(OBJ_DIR)/piconzero.o $(OBJ_DIR)/PiconZero_cpp.o $(CORE_OBJ_DIR)/i2cUtils.o
 	@mkdir -p $(OBJ_DIR)
 	$(CXX) -o $@ $^ $(LD_FLAGS) -lncurses
 
 .PHONY: run
 run: $(OBJ_DIR)/robot
 	@./$<
+
+### Dependency recipes
+
+$(CORE_OBJ_DIR)/i2cUtils.o:
+	make -C ./core/i2c $@
 
 ### Required recipes
 

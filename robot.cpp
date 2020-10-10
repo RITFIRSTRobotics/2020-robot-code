@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
     // dbg_info("git hash = %08x\n", GIT_COMMIT_HASH);
 
     // Initialize the Picon Zero
-    // PiconZero* pz = PiconZero::getInstance();           // breaking??????
+    PiconZero* pz = PiconZero::getInstance();           // breaking??????
 
     // Store keyboard input
     char keyin = 0;
