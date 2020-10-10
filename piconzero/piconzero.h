@@ -27,7 +27,7 @@ extern "C" {
 #include <linux/i2c-dev.h>
 
 // local i2c utilities
-#include "core/i2c/i2cUtils.h"
+#include "core/i2c/i2cutils.h"
 
 #define PZ_I2CADDR 0x22
 #define PZCMD_MOTORA 0
