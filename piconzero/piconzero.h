@@ -1,5 +1,18 @@
+/**
+ * piconzero.h
+ *
+ * Driver for the 4tronix Picon Zero written in C
+ *
+ * @author Alex Kneipp, @ahkneipp
+ * @author Connor Henley, @thatging3rkid
+ */
 #ifndef _PICONZERO_H
 #define _PICONZERO_H
+
+// allow C++ to parse this
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 // standard includes
 #include <time.h>
@@ -14,7 +27,7 @@
 #include <linux/i2c-dev.h>
 
 // local i2c utilities
-#include "core/i2c/i2cUtils.h"
+#include "core/i2c/i2cutils.h"
 
 #define PZ_I2CADDR 0x22
 #define PZCMD_MOTORA 0
@@ -64,19 +77,19 @@ typedef struct {
     i2cBus bus; // the i2c bus struct representing the bust the Picon Zero is on
     uint16_t initialized; // 1 if the board has been initialized, else 0
     uint16_t revision; // board info, first byte is firmware revision, second is board type
-} PiconZero;
+} PiconZero_t;
 
 /**
  *
  * @return
  */
-PiconZero* pz_create();
+PiconZero_t* pz_create();
 /**
  *
  * @param pz
  * @return
  */
-int pz_init(PiconZero* pz);
+int pz_init(PiconZero_t* pz);
 
 /**
  *
@@ -85,7 +98,7 @@ int pz_init(PiconZero* pz);
  * @param value
  * @return
  */
-int pz_setMotor(PiconZero* pz, int motor, int8_t value);
+int pz_setMotor(PiconZero_t* pz, int motor, int8_t value);
 /**
  *
  * @param pz
@@ -93,7 +106,7 @@ int pz_setMotor(PiconZero* pz, int motor, int8_t value);
  * @param buf
  * @return
  */
-int pz_readInput(PiconZero* pz, int channel, int16_t* buf);
+int pz_readInput(PiconZero_t* pz, int channel, int16_t *buf);
 /**
  *
  * @param pz
@@ -101,7 +114,7 @@ int pz_readInput(PiconZero* pz, int channel, int16_t* buf);
  * @param configValue
  * @return
  */
-int pz_setOutputConfig(PiconZero* pz, int channel, PZ_OutputConfig_t configValue);
+int pz_setOutputConfig(PiconZero_t* pz, int channel, PZ_OutputConfig_t configValue);
 /**
  *
  * @param pz
@@ -110,19 +123,24 @@ int pz_setOutputConfig(PiconZero* pz, int channel, PZ_OutputConfig_t configValue
  * @param pullup
  * @return
  */
-int pz_setInputConfig(PiconZero* pz, int channel, PZ_InputConfig_t configValue, int pullup);
+int pz_setInputConfig(PiconZero_t* pz, int channel, PZ_InputConfig_t configValue, int pullup);
 
 /**
  *
  * @param pz
  * @return
  */
-int pz_cleanup(PiconZero* pz);
+int pz_cleanup(PiconZero_t* pz);
 /**
  *
  * @param pz
  * @return
  */
-int pz_destroy(PiconZero* pz);
+int pz_destroy(PiconZero_t* pz);
+
+// allow C++ to parse this
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -15,7 +15,7 @@
  * @param reg the register to write the data to
  * @param data the data to write to the register
  */
-static int pz_sendByte(PiconZero* pz, uint8_t reg, int8_t data)
+static int pz_sendByte(PiconZero_t* pz, uint8_t reg, int8_t data)
 {
 	if(!pz->initialized)
 	{
@@ -38,7 +38,7 @@ static int pz_sendByte(PiconZero* pz, uint8_t reg, int8_t data)
  * @param reg the register to write the data to
  * @param data the data to write to the register
  */
-static int pz_sendWord(PiconZero* pz, uint8_t reg, int16_t data)
+static int pz_sendWord(PiconZero_t* pz, uint8_t reg, int16_t data)
 {
 	if(!pz->initialized)
 	{
@@ -61,7 +61,7 @@ static int pz_sendWord(PiconZero* pz, uint8_t reg, int16_t data)
  * @param reg the register to read data from
  * @error if an error occurs, errno is set with the error code
  */
-static int8_t pz_getByte(PiconZero* pz, int8_t reg)
+static int8_t pz_getByte(PiconZero_t* pz, int8_t reg)
 {
 	if(!pz->initialized)
 	{
@@ -88,7 +88,7 @@ static int8_t pz_getByte(PiconZero* pz, int8_t reg)
  * @param reg the register to read data from
  * @error if an error occurs, errno is set with the error code
  */
-static int16_t pz_getWord(PiconZero* pz, int16_t reg)
+static int16_t pz_getWord(PiconZero_t* pz, int16_t reg)
 {
 	if(!pz->initialized)
 	{
@@ -111,9 +111,9 @@ static int16_t pz_getWord(PiconZero* pz, int16_t reg)
 /**
  * @inherit
  */
-PiconZero* pz_create()
+PiconZero_t* pz_create()
 {
-	PiconZero* rval = malloc(sizeof(PiconZero));
+	PiconZero_t* rval = malloc(sizeof(PiconZero_t));
 	char* filename="/dev/i2c-1";
 	if( (rval->bus = i2cBus_create(filename)) == NULL )
 	{
@@ -128,7 +128,7 @@ PiconZero* pz_create()
 /**
  * @inherit
  */
-int pz_init(PiconZero* pz)
+int pz_init(PiconZero_t* pz)
 {
 	errno = 0;
 	if(i2cBus_initSlave(pz->bus, PZ_I2CADDR) != 0)
@@ -147,7 +147,7 @@ int pz_init(PiconZero* pz)
 /**
  * @inherit
  */
-int pz_setMotor(PiconZero* pz, int motor, int8_t value)
+int pz_setMotor(PiconZero_t* pz, int motor, int8_t value)
 {
 	if( (motor < 0 || motor > 1))
 	{
@@ -159,7 +159,7 @@ int pz_setMotor(PiconZero* pz, int motor, int8_t value)
 /**
  * @inherit
  */
-int pz_readInput(PiconZero* pz, int channel, int16_t* buf)
+int pz_readInput(PiconZero_t* pz, int channel, int16_t *buf)
 {
 	if(channel < 0 || channel > PZ_MAX_INPUT_CHANNEL)
 	{
@@ -179,7 +179,7 @@ int pz_readInput(PiconZero* pz, int channel, int16_t* buf)
 /**
  * @inherit
  */
-int pz_setOutputConfig(PiconZero* pz, int channel, PZ_OutputConfig_t configValue)
+int pz_setOutputConfig(PiconZero_t* pz, int channel, PZ_OutputConfig_t configValue)
 {
 	if(channel < 0 || channel > PZ_MAX_OUTPUT_CHANNEL)
 	{
@@ -197,7 +197,7 @@ int pz_setOutputConfig(PiconZero* pz, int channel, PZ_OutputConfig_t configValue
 /**
  * @inherit
  */
-int pz_setInputConfig(PiconZero* pz, int channel, PZ_InputConfig_t configValue, int pullup)
+int pz_setInputConfig(PiconZero_t* pz, int channel, PZ_InputConfig_t configValue, int pullup)
 {
 	if(channel < 0 || channel > PZ_MAX_INPUT_CHANNEL)
 	{
@@ -223,7 +223,7 @@ int pz_setInputConfig(PiconZero* pz, int channel, PZ_InputConfig_t configValue, 
 /**
  * @inherit
  */
-int pz_cleanup(PiconZero* pz)
+int pz_cleanup(PiconZero_t* pz)
 {
 	pz->initialized = 0;
 	return PZ_EXIT_SUCCESS;
@@ -232,7 +232,7 @@ int pz_cleanup(PiconZero* pz)
 /**
  * @inherit
  */
-int pz_destroy(PiconZero* pz)
+int pz_destroy(PiconZero_t* pz)
 {
 	free(pz);
 	return PZ_EXIT_SUCCESS;

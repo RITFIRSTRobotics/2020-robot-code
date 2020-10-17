@@ -1,0 +1,43 @@
+# 2020-core-code GitHub Action config
+#
+# Action that runs on pushes to master and pull requests
+#     - compile all code and documentation
+#     - run any tests
+#
+# @version v1.0
+# @author Connor Henley, @thatging3rkid
+name: Pre-master Integration Testing
+
+on:
+    # Run on every push to master
+    push:
+        branches:
+            - 'master'
+    # Run on pull requests
+    pull_request:
+        types: [opened, synchronize, reopened]
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    
+    steps:
+    - uses: actions/checkout@v2 # checkout the repository
+      with:
+        submodules: 'true'
+
+    # mark that we're running a full build
+    - name: Setup
+      run: touch config.full && touch core/config.full
+
+    # run ./configure
+    - name: Configure
+      run: ./configure && ./core/configure
+
+    # build all the code
+    - name: Build
+      run: make
+
+    # run tests
+    - name: Test
+      run: make check
