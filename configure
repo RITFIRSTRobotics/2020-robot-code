@@ -137,6 +137,10 @@ printf '\t@echo "Finished running ci-build for all"\n' >>Makefile
 printf '\ncheck:\n' >>Makefile
 for s in "${dirs[@]}"
 do
+    # don't run tests on core
+    if [[ "${s}" == "./core/" ]]; then
+        continue
+    fi
     gen_makefile_line ${s} "ci-test"
 done
 printf '\t@echo "Finished running ci-test for all"\n' >>Makefile
