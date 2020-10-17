@@ -16,7 +16,7 @@
 
 // debugging includes
 #include "core/utils/dbgprint.h"
-// #include "core/utils/dbgcommit.h"
+#include "core/utils/dbgcommit.h"
 
 using namespace std;
 
@@ -26,7 +26,7 @@ int main(int argc, char* argv[]) {
 
     // Startup info
     dbg_info("starting up robot code...\n");
-    // dbg_info("git hash = %08x\n", GIT_COMMIT_HASH);
+    dbg_info("git hash = %08x\n", GIT_COMMIT_HASH);
 
     // Initialize the Picon Zero
     PiconZero* pz = PiconZero::getInstance();           // breaking??????

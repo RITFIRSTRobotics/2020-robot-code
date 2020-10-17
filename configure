@@ -39,6 +39,11 @@ else
     make_mode="dev"
 fi
 
+# generate the core Makefile
+if test -d "./core"; then
+    (cd ./core; ./configure)
+fi
+
 # debugging: log the make mode
 printf '[info] make_mode=%s\n' ${make_mode}
 
@@ -85,13 +90,22 @@ make_mode_param="MAKE_MODE=${make_mode^^}"
 
 # define a function to generate each line of the makefile
 #
-# @param $1 the make command to run
-# @param $2 the file/directory to generate a make entry for
+# @param $1 the file/directory to generate a make entry for
+# @param $2 the make command to run
 gen_makefile_line(){
+    # generate a make prefix (ignore errors for clean commands)
+    make_cmd="make"
+    if [[ "${2}" == "clean" ]]; then
+        make_cmd="-make"
+    fi
+
+    # generate the specific make commands
     if test -f ${1}; then
-        printf '\t-make %s %s -f %s %s\n' ${make_mode_param} ${git_hash} ${1} ${2} >>Makefile
-    else
-        printf '\t-make %s %s -C %s %s\n' ${make_mode_param} ${git_hash} ${1} ${2} >>Makefile
+        # make command for a specific file (i.e. make.mk)
+        printf '\t%s %s %s -f %s %s\n' ${make_cmd} ${make_mode_param} ${git_hash} ${1} ${2} >>Makefile
+    elif test -d ${1}; then
+        # a make command for a directory with a Makefile
+        printf '\t%s %s %s -C %s %s\n' ${make_cmd} ${make_mode_param} ${git_hash} ${1} ${2} >>Makefile
     fi
 }
 
@@ -136,4 +150,4 @@ do
 done
 printf '\t@echo "Finished running clean for all"\n' >>Makefile
 
-echo "Complete!"
+echo "2020-robot-code configure complete!"
